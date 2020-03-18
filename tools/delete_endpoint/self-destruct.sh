@@ -52,7 +52,8 @@ done
 # special case for meterings.multicloud.ibm.com
 for resource in `kubectl get meterings.multicloud.ibm.com -n kube-system -o name`; do
 	kubectl delete ${resource} -n kube-system --timeout=15s
-	kubectl patch ${resource} -n kube-system --type="json" -p '[{"op": "remove", "path":"/metadata/finalizers"}]'
+	kubectl patch ${resource} -n kube-system --type="json" -p '[{"op": "remove", "path":"/metadata/finalizers"}
+]'
 done
 
 for crd in "${component_crds[@]}"; do
@@ -61,7 +62,8 @@ for crd in "${component_crds[@]}"; do
 		echo "attempt to delete ${crd} resource ${resource}..."
 		kubectl delete ${resource} -n ${OPERATOR_NAMESPACE} --timeout=15s
 		echo "force remove ${crd} resource ${resource}..."
-		kubectl patch ${resource} -n ${OPERATOR_NAMESPACE} --type="json" -p '[{"op": "remove", "path":"/metadata/finalizers"}]'
+		kubectl patch ${resource} -n ${OPERATOR_NAMESPACE} --type="json" -p '[{"op": "remove", "path":"/met
+adata/finalizers"}]'
 	done
 	echo "force delete all CustomResourceDefination ${crd} resources..."
 	kubectl delete ${crd}
