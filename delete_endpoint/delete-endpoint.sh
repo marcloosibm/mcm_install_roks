@@ -1,0 +1,118 @@
+One of the developers notes this as a workaround:
+To workaround you can remove this webhook kubectl get mutatingwebhookconfiguration namespace-admission-config -o yaml > namespace-admission-config.yaml; kubectl delete mutatingwebhookconfiguration namespace-admission-config. Once your namespace was successfully removed you can get it back kubectl apply -f namespace-admission-config.yaml
+
+
+klogin
+git clone https://github.com/niklaushirt/mmc_install.git
+cd mmc_install/delete_endpoint/
+chmod +x *.sh
+
+~/mmc_install/delete_endpoint/self-destruct.sh
+
+
+wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 -O jq
+chmod +x jq
+
+mv jq /usr/local/bin
+
+~/mmc_install/delete_endpoint/force_delete_namespace.sh multicluster-endpoint
+
+
+
+
+rhocp-prod2
+
+
+kubectl get clusters --all-namespaces
+
+kubectl delete cluster -n newcluster newcluster
+KUBE_EDITOR="nano" kubectl edit cluster -n newcluster newcluster
+
+
+
+
+kubectl delete cluster -n rhocp-prod1 rhocp-prod1
+KUBE_EDITOR="nano" kubectl edit cluster -n rhocp-prod1 rhocp-prod1
+
+kubectl delete cluster -n rhocp-prod2 rhocp-prod2
+KUBE_EDITOR="nano" kubectl edit cluster -n rhocp-prod2 rhocp-prod2
+
+
+
+rhocp-prod1
+
+curl -k -H "Authorization: Bearer 5982144f2fa1df2c3d8cc3651bb0f10af5a2d17cfe0c2d2a3389d18a639588867da77facc20e010436a0fb23438386b4fec7608744431952c30dcd38c0615796950f8291cda25782ce0aee57a4dc621d1fc66d0bfe5a53398e9fdc4038b0a66674e86caa1c5a8006adb35030252a2dbeb290694fec8bfbf12b1b34616c3958f33a33942ec69664f968b6b7e1eab8dc7151fec184ffe3593deb910127ba862936326fcc4091ffde4ab2a0839b3600cbf5ee44f487c96e3cdd0fee12f8282d7f8d9b5d82fc9ec693b0bee4d6711f22e412ef549030d7405f0ecc24894ebe2f4c89c8bf2b608b21e54bc3c4bdc1b0b6583b13222ce10fe177c5642f2bbc36559a1bb6c3f42d3ea35006d2e5a20d465c843b8a4d1b82717d9a501a9c69d335c165fdbadbac223580cdb7535c48f9ad95b9d6164db414efcf16f0601e9db6ea3d1e4a5d04f3cb10e02348b1929fadaae1d854dc48f1e058a13b39b5ede353c0efc48e00f89e4d42aac05f6d2e0bffc3a5349204a5f4ccfcc2ddb4241e9155886bca396782fc4df06593ffa8558c15821076ebc627a1107db122666138eea292c312c20c956e17b51ac361feb7e8e0d583be5867161ffbb0e55594c188c8b573b643fb200754ea32c8a8a93638816baf80b09092a1fed4186f7fff729fe63ec52b2a4d6c1cd35f519f0685fec25f4ed6cd3534f169f09c26750ebd9404908a0c03d802" https://5.39.74.54:8443/api/v1/clusters/rhocp-prod1/rhocp-prod1/import.yaml | kubectl apply -f -
+
+
+rhocp-prod2
+
+
+
+
+mongodbdir-endpoint-metering-mongodb-0
+
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongodbdir-endpoint-metering-mongodb-0
+  namespace: multicluster-endpoint
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/tmp"
+
+
+
+ibm-rhocp-1
+
+curl -k -H "Authorization: Bearer 6f164947de83abd9904aa2787296ffacc75a6c492b9826acc5119740a818c4e4c63fa039b482df43b47f4ac91291e7ff5a34c11965dba654d80b14a28320c42f35f59b03c2c2c38b4672c238cc8350aa721a91767e72cccfe255ab4db4da7374c45f2e02a19f1e87576e82c8de49fd67988184182f82d780cb2d99ef30c691246d2c1d6a9eb82ebe57ebd8ce6a495d73ca231dabb23b7dc58485463006c38fec0640c163fd24bf18a88b6cd3750e087cbfe13bf713f75969f7931f5948e4a5861fe02044d4c27750420e1c2e609d71dcb61be9dd8ebc62a08c0f083172fc7af52e412d3c0cb20a0246acc4670dad42d51081d91259a90eccd15ed383015a4926a0976cd6cc2e7165353490888d901440a486464362b4bb6cd6341bc9a0bed70296306109a880529b8f7d3975ea9fd2fd31e9f84a550a5fdbe38cfecb12fb43778d1cfefbbd7860a5d6a1fa4e52d9614eeac36603b382a1422f665e63bb2de33c09822b442f3d0a6ab1e583045dcfda462bf557e65f026c7b26873417c7ae242a453619027481b5425539a6e7e57bb66558da53177bcc2f4fab8e4a50392b60402fde3d30b8542d4dca905d20d6f752074e8dcceb2e61538dd1857926b472ee827496380152cab70667f65292ff226c2f76d7256350bba6fd1ffb4d770959d820380373fbfeb043b530ccea0143ca97dff9e06299000ecf9211bce76710df6aea" https://5.39.74.54:8443/api/v1/clusters/ibm-rhocp-1/ibm-rhocp-1/import.yaml | kubectl apply -f -
+
+iks 
+
+curl -k -H "Authorization: Bearer 6f164947de83abd9904aa2787296ffacc75a6c492b9826acc5119740a818c4e4c63fa039b482df43b47f4ac91291e7ff5a34c11965dba654d80b14a28320c42f35f59b03c2c2c38b4672c238cc8350aa721a91767e72cccfe255ab4db4da7374c45f2e02a19f1e87576e82c8de49fd67988184182f82d780cb2d99ef30c691246d2c1d6a9eb82ebe57ebd8ce6a495d73ca231dabb23b7dc58485463006c38fec0640c163fd24bf18a88b6cd3750e087cbfe13bf713f75969f7931f5948e4a5861fe02044d4c27750420e1c2e609d71dcb61be9dd8ebc62a08c0f083172fc7af52e412d3c0cb20a0246acc4670dad42d51081d91259a90eccd15ed383015a4926a0976cd6cc2e7165353490888d901440a486464362b4bb6cd6341bc9a0bed70296306109a880529b8f7d3975ea9fd2fd31e9f84a550a5fdbe38cfecb12fb43778d1cfefbbd7860a5d6a1fa4e52d9614eeac36603b382a1422f665e63bb2de33c09822b442f3d0a6ab1e583045dcfda462bf557e65f026c7b26873417c7ae242a453619027481b5425539a6e7e57bb66558da53177bcc2f4fab8e4a50392b60402fde3d30b8542d4dca905d20d6f752074e8dcceb2e61538dd1857926b472ee827496380152cab70667f65292ff226c2f76d7256350bba6fd1ffb4d770959d820380373fbfeb043b530ccea0143ca97dff9e06299000ecf9211bce76710df6aea" https://5.39.74.54:8443/api/v1/clusters/ibm-iks-1/ibm-iks-1/import.yaml | kubectl apply -f -
+
+
+
+
+azure-rhocp-1
+
+curl -k -H "Authorization: Bearer 6f164947de83abd9904aa2787296ffacc75a6c492b9826acc5119740a818c4e4c63fa039b482df43b47f4ac91291e7ff5a34c11965dba654d80b14a28320c42f35f59b03c2c2c38b4672c238cc8350aa721a91767e72cccfe255ab4db4da7374c45f2e02a19f1e87576e82c8de49fd67988184182f82d780cb2d99ef30c691246d2c1d6a9eb82ebe57ebd8ce6a495d73ca231dabb23b7dc58485463006c38fec0640c163fd24bf18a88b6cd3750e087cbfe13bf713f75969f7931f5948e4a5861fe02044d4c27750420e1c2e609d71dcb61be9dd8ebc62a08c0f083172fc7af52e412d3c0cb20a0246acc4670dad42d51081d91259a90eccd15ed383015a4926a0976cd6cc2e7165353490888d901440a486464362b4bb6cd6341bc9a0bed70296306109a880529b8f7d3975ea9fd2fd31e9f84a550a5fdbe38cfecb12fb43778d1cfefbbd7860a5d6a1fa4e52d9614eeac36603b382a1422f665e63bb2de33c09822b442f3d0a6ab1e583045dcfda462bf557e65f026c7b26873417c7ae242a453619027481b5425539a6e7e57bb66558da53177bcc2f4fab8e4a50392b60402fde3d30b8542d4dca905d20d6f752074e8dcceb2e61538dd1857926b472ee827496380152cab70667f65292ff226c2f76d7256350bba6fd1ffb4d770959d820380373fbfeb043b530ccea0143ca97dff9e06299000ecf9211bce76710df6aea" https://5.39.74.54:8443/api/v1/clusters/azure-rhocp-1/azure-rhocp-1/import.yaml | kubectl apply -f -
+
+
+
+aws-rhocp-1
+
+curl -k -H "Authorization: Bearer 6f164947de83abd9904aa2787296ffacc75a6c492b9826acc5119740a818c4e4c63fa039b482df43b47f4ac91291e7ff5a34c11965dba654d80b14a28320c42f35f59b03c2c2c38b4672c238cc8350aa721a91767e72cccfe255ab4db4da7374c45f2e02a19f1e87576e82c8de49fd67988184182f82d780cb2d99ef30c691246d2c1d6a9eb82ebe57ebd8ce6a495d73ca231dabb23b7dc58485463006c38fec0640c163fd24bf18a88b6cd3750e087cbfe13bf713f75969f7931f5948e4a5861fe02044d4c27750420e1c2e609d71dcb61be9dd8ebc62a08c0f083172fc7af52e412d3c0cb20a0246acc4670dad42d51081d91259a90eccd15ed383015a4926a0976cd6cc2e7165353490888d901440a486464362b4bb6cd6341bc9a0bed70296306109a880529b8f7d3975ea9fd2fd31e9f84a550a5fdbe38cfecb12fb43778d1cfefbbd7860a5d6a1fa4e52d9614eeac36603b382a1422f665e63bb2de33c09822b442f3d0a6ab1e583045dcfda462bf557e65f026c7b26873417c7ae242a453619027481b5425539a6e7e57bb66558da53177bcc2f4fab8e4a50392b60402fde3d30b8542d4dca905d20d6f752074e8dcceb2e61538dd1857926b472ee827496380152cab70667f65292ff226c2f76d7256350bba6fd1ffb4d770959d820380373fbfeb043b530ccea0143ca97dff9e06299000ecf9211bce76710df6aea" https://5.39.74.54:8443/api/v1/clusters/aws-rhocp-1/aws-rhocp-1/import.yaml | kubectl apply -f -
+
+
+
+
+
+
+
+
+
+docker pull docker.io/ibmcom/mcm-klusterlet:3.2.1
+docker pull docker.io/ibmcom/icp-multicluster-endpoint-operator:3.2.1
+docker pull docker.io/ibmcom/deployable:3.2.1
+docker pull docker.io/ibmcom/search-collector:3.2.1
+docker pull docker.io/ibmcom/klusterlet-component-operator:3.2.1
+docker pull docker.io/ibmcom/mcm-operator:3.2.1
+docker pull docker.io/ibmcom/icp-management-ingress:2.4.0
+docker pull docker.io/ibmcom/mcm-service-registry:3.2.1
+docker pull docker.io/ibmcom/helm-crd-controller:3.2.1
+docker pull docker.io/ibmcom/tillerv2.12.3-icp-:3.2.1
+docker pull docker.io/ibmcom/subscription:3.2.1
+docker pull docker.io/ibmcom/mcm-weave-scope:3.2.1
+docker pull docker.io/ibmcom/icp-cert-manager-controller:0.7.0.1
+docker pull docker.io/ibmcom/coredns:1.2.6.1
+docker pull docker.io/ibmcom/helm-crd-admission-controller:3.2.1
+docker pull docker.io/ibmcom/mcm-compliance:3.2.1
+docker pull docker.io/ibmcom/weave-collector:3.2.1
